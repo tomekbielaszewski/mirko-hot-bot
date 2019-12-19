@@ -1,0 +1,19 @@
+{
+  "name": "mirko-hot-bot",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Tomek Bielaszewski",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.593.0",
+    "lodash": "^4.17.15",
+    "wykop-es6-2": "^0.6.6"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "deploy": "sls deploy"
+  }
+}
