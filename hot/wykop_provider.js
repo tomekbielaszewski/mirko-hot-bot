@@ -1,6 +1,6 @@
 'use strict';
 
-const Wykop = require('wykop-es6');
+const Wykop = require('wykop-es6-2');
 const _ = require('lodash');
 
 const wykop = new Wykop(process.env.appkey, process.env.secretkey, {output: 'clear'});
