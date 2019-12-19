@@ -23,8 +23,7 @@ functions:
     memorySize: 1024
     timeout: 30
     events:
-      # Daily at 8,11,14,17,19 GMT (+1 for poland)
-      - schedule: cron(0 8,15,21 * * ? *)
+      - schedule: cron(0 8,15,21 * * ? *) # (+1h for poland)
 
 resources:
   Resources:
