@@ -1,14 +1,17 @@
 service: mirko-hot-bot
 frameworkVersion: ">=1.1.0 <2.0.0"
 
+plugins:
+  - serverless-plugin-typescript
+
 provider:
   name: aws
   profile: sls_framework
   region: eu-west-1
   runtime: nodejs12.x
   environment:
-    appkey: d99b6pFK8f
-    secretkey: z7nF82zdPy
+    appkey: aNd401dAPp
+    secretkey: 3lWf1lCxD6
     dynamo_table: mirko_hot_entries_24h
     region: eu-west-1
   iamRoleStatements:
@@ -41,3 +44,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+
