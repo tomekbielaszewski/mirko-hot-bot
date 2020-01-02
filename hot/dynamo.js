@@ -6,8 +6,10 @@ const dynamo = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 const serialize = require('./dynamo-serializer').serialize;
 const hotEntriesTable = process.env.dynamo_table;
 const batchSize = 25;
+const _ = require('lodash');
 
 module.exports.saveBatch = (entries) => {
+  console.log(JSON.stringify(entries));
   return _.chunk(entries, batchSize)
     .map(toBatchRequest)
     .map(writeBatch);
