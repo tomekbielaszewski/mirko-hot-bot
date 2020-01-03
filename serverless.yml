@@ -40,7 +40,8 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-        StreamViewType: NEW_IMAGE
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
