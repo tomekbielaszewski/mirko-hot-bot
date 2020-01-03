@@ -9,10 +9,12 @@ const batchSize = 25;
 const _ = require('lodash');
 
 module.exports.saveBatch = (entries) => {
-  console.log(JSON.stringify(entries));
-  return _.chunk(entries, batchSize)
-    .map(toBatchRequest)
-    .map(writeBatch);
+  console.log("Starting dynamo batch save");
+  return Promise.all(
+    _.chunk(entries, batchSize)
+      .map(toBatchRequest)
+      .map(writeBatch)
+  );
 };
 
 function toBatchRequest(entries) {
@@ -28,12 +30,15 @@ function toBatchRequest(entries) {
         }
       };
     });
+  console.log("Dynamo batch chunk:");
+  console.log(JSON.stringify(request));
   return request;
 }
 
 function writeBatch(batch) {
   return new Promise((res, rej) => {
     dynamo.batchWriteItem(batch, (err, data) => {
+      console.log("Dynamo response: err:{}, data:{} ", err, data);
       if (err) {
         rej(err);
       } else {
