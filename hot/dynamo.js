@@ -33,7 +33,7 @@ function toBatchRequest(entries) {
 
 function writeBatch(batch) {
   return new Promise((res, rej) => {
-    dynamo.batchWriteItem(params, (err, data) => {
+    dynamo.batchWriteItem(batch, (err, data) => {
       if (err) {
         rej(err);
       } else {
