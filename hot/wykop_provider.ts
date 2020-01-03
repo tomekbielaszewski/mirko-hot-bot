@@ -2,7 +2,13 @@ import Wykop from "wykop-v2";
 
 import * as _ from "lodash";
 
-const getHotByPeriod = (page, period) => {
+interface WykopResponse {
+    response: any,
+    page: number,
+    period: number
+}
+
+function getHotByPeriod(page: number, period: number): Promise<{}> {
     const wykop = new Wykop({
         appkey: process.env.appkey,
         secret: process.env.secretkey,
@@ -14,13 +20,8 @@ const getHotByPeriod = (page, period) => {
             period: period
         }
     });
-};
-
-interface WykopResponse {
-    response: any,
-    page: number,
-    period: number
 }
+
 
 function getHot24(page: number): Promise<WykopResponse> {
     return getHotByPeriod(page, 24)
@@ -48,9 +49,5 @@ export const getHot = () => {
                     entry.period = singleRes.period;
                     return entry;
                 })))
-        .then(entries => _.flatMap(entries))
-        .then(res => {
-            console.log(JSON.stringify(res));
-            return res;
-        });
+        .then(entries => _.flatMap(entries));
 };
