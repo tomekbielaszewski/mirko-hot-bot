@@ -26,7 +26,7 @@ functions:
     memorySize: 1024
     timeout: 30
     events:
-      - schedule: cron(0 8,15,21 * * ? *) # (+1h for poland)
+      - schedule: cron(*/30 7-23 * * ? *) # (every 30th minute from 8 to 24 -> +1h for poland)
 
 resources:
   Resources:
