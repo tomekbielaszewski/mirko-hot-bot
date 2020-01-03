@@ -3,7 +3,7 @@
 const AWS = require('aws-sdk');
 AWS.config.update({region: process.env.region});
 const dynamo = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-const serialize = require('./dynamo-serializer').serialize;
+const marshall = AWS.DynamoDB.Converter.marshall;
 const hotEntriesTable = process.env.dynamo_table;
 const batchSize = 25;
 const _ = require('lodash');
@@ -22,7 +22,7 @@ function toBatchRequest(entries) {
     RequestItems: {}
   };
   request.RequestItems[hotEntriesTable] = entries
-    .map(serialize)
+    .map(marshall)
     .map(e => {
       return {
         PutRequest: {
