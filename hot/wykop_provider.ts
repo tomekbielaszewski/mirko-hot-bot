@@ -1,6 +1,11 @@
 import Wykop from "wykop-v2";
-
 import * as _ from "lodash";
+
+const wykop = new Wykop({
+    appkey: process.env.appkey,
+    secret: process.env.secretkey,
+    errorTelemetry: false
+});
 
 interface WykopResponse {
     response: any,
@@ -9,11 +14,7 @@ interface WykopResponse {
 }
 
 function getHotByPeriod(page: number, period: number): Promise<{}> {
-    const wykop = new Wykop({
-        appkey: process.env.appkey,
-        secret: process.env.secretkey,
-        errorTelemetry: false
-    });
+    console.log("Getting hot entries from: page {}, period {}", page, period);
     return wykop.request(['Entries', 'Hot'], {
         named: {
             page: page,
