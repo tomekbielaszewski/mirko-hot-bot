@@ -36,7 +36,7 @@ resources:
         TableName: ${self:provider.environment.dynamo_table}
         AttributeDefinitions:
           - AttributeName: id
-            AttributeType: S
+            AttributeType: N
         KeySchema:
           - AttributeName: id
             KeyType: HASH
