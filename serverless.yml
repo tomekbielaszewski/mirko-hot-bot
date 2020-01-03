@@ -12,7 +12,7 @@ provider:
   environment:
     appkey: aNd401dAPp
     secretkey: 3lWf1lCxD6
-    dynamo_table: mirko_hot_entries_24h
+    dynamo_table: mirko_hot_entries_24h_rev2
     region: eu-west-1
   iamRoleStatements:
     - Effect: Allow
