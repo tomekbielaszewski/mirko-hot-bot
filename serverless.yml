@@ -12,6 +12,9 @@ provider:
   environment:
     appkey: aNd401dAPp
     secretkey: 3lWf1lCxD6
+    appkey_poster: xyz
+    secretkey_poster: xyz
+    userkey_poster: xyz
     dynamo_table: mirko_hot_entries_24h_rev2
     region: eu-west-1
   iamRoleStatements:
@@ -25,6 +28,12 @@ functions:
     handler: handler.hotFetcher
     memorySize: 256
     timeout: 30
+    events:
+      - schedule: cron(*/30 7-23 * * ? *) # (every 30th minute from 8 to 24 -> +1h for poland)
+  userNotifier:
+    handler: handler.userNotifier
+    memorySize: 128
+    timeout: 10
     events:
       - schedule: cron(*/30 7-23 * * ? *) # (every 30th minute from 8 to 24 -> +1h for poland)
 
