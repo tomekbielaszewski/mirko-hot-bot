@@ -7,10 +7,10 @@ const wykop = new Wykop({
 });
 
 interface WykopAPI {
-    postComment: (body: string, entryId: number, embed?: string) => void
+    postComment: (body: string, entryId: number) => void
 }
 
-function postComment(body: string, entryId: number, embed?: string) {
+function postComment(body: string, entryId: number) {
     wykop.login(<string>process.env.userkey_poster)
         .then(() => wykop.request(['Entries', 'CommentAdd'], {
             api: [entryId],
