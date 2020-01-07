@@ -2,8 +2,14 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: process.env.region});
 const unmarshal = AWS.DynamoDB.Converter.unmarshall;
 import {Callback, Context, DynamoDBRecord, DynamoDBStreamEvent} from "aws-lambda";
-import {WykopEntry} from './wykop_entry';
 import {WykopPoster as wykop} from './wykop_poster';
+
+export interface WykopEntry {
+    id: number,
+    author: string,
+    page: number,
+    period: number
+}
 
 function getEntry(record: DynamoDBRecord): WykopEntry | undefined {
     if (record.eventName === "INSERT") {
