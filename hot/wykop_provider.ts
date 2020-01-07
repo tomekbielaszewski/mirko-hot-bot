@@ -36,7 +36,7 @@ function getHot24(page: number): Promise<WykopResponse> {
 }
 
 export const getHot = () => {
-    return Promise.all(_.range(1, 21)
+    return Promise.all(_.range(1, 11)
         .map(getHot24))
         .then(res => _.flatMap<WykopResponse>(res)
             .map(singlePage => {
