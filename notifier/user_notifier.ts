@@ -11,31 +11,25 @@ export interface WykopEntry {
     period: number
 }
 
-function login(): Promise<any> {
+async function login(): Promise<any> {
     let login: string = process.env.nick || "";
     let pass: string = process.env.pass || "";
-    return wykop.login(login, pass);
+    await wykop.login(login, pass);
 }
 
-function getEntry(record: DynamoDBRecord): Promise<WykopEntry> {
-    return new Promise<WykopEntry>((resolve) => {
-        if (record.eventName === "INSERT") {
-            resolve(unmarshal(record.dynamodb?.NewImage));
-            return;
-        }
-        console.log(`Skipping ${record.eventName} event`);
-        resolve();
-    });
+function onlyNewRecords(record: DynamoDBRecord): boolean {
+    return record.eventName === "INSERT";
 }
 
-function notifyAuthor(entry: WykopEntry): Promise<any> {
-    if (entry) {
-        console.log(`Notifying ${entry.author} in entry https://www.wykop.pl/wpis/${entry.id}`);
-        // let body = `@${entry.author} MirkoHotBot gratuluje! Twój wpis wylądował w gorących!`;
-        let body = `${entry.author} test!`;
-        return wykop.postComment(body, entry.id);
-    }
-    return Promise.resolve();
+function extractEntry(record: DynamoDBRecord): WykopEntry {
+    return unmarshal(record.dynamodb?.NewImage);
+}
+
+async function notifyAuthor(entry: WykopEntry): Promise<any> {
+    console.log(`Notifying ${entry.author} in entry https://www.wykop.pl/wpis/${entry.id}`);
+    // let body = `@${entry.author} MirkoHotBot gratuluje! Twój wpis wylądował w gorących!`;
+    let body = `${entry.author} test!`;
+    await wykop.postComment(body, entry.id);
 }
 
 function success(callback: Callback) {
@@ -49,10 +43,11 @@ function failure(callback: Callback) {
 export const notify = (event: DynamoDBStreamEvent, context: Context, callback: Callback) => {
     login()
         .then(() =>
-            Promise.all(event.Records.map(record =>
-                getEntry(record)
-                    .then(notifyAuthor)))
-                .then(success(callback))
-                .catch(failure(callback))
-        );
+            Promise.all(event.Records
+                .filter(onlyNewRecords)
+                .map(extractEntry)
+                .map(notifyAuthor))
+        )
+        .then(success(callback))
+        .catch(failure(callback))
 };
