@@ -11,6 +11,12 @@ export interface WykopEntry {
     period: number
 }
 
+function login(): Promise<any> {
+    let login: string = process.env.nick || "";
+    let pass: string = process.env.pass || "";
+    return wykop.login(login, pass);
+}
+
 function getEntry(record: DynamoDBRecord): Promise<WykopEntry> {
     return new Promise<WykopEntry>((resolve) => {
         if (record.eventName === "INSERT") {
@@ -41,9 +47,12 @@ function failure(callback: Callback) {
 }
 
 export const notify = (event: DynamoDBStreamEvent, context: Context, callback: Callback) => {
-    Promise.all(event.Records.map(record =>
-        getEntry(record)
-            .then(notifyAuthor)))
-        .then(success(callback))
-        .catch(failure(callback));
+    login()
+        .then(() =>
+            Promise.all(event.Records.map(record =>
+                getEntry(record)
+                    .then(notifyAuthor)))
+                .then(success(callback))
+                .catch(failure(callback))
+        );
 };

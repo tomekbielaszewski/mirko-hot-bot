@@ -6,21 +6,28 @@ const wykop = new Wykop({
 });
 
 interface WykopAPI {
+    login: (login: string, password: string) => Promise<any>
     postComment: (body: string, entryId: number) => Promise<any>
 }
 
-function postComment(body: string, entryId: number): Promise<any> {
-    console.log(`Posting comment for entry id: ${entryId} with body "${body}"`);
-    return wykop.login(<ILoginData>{
-        login: process.env.nick,
-        password: process.env.pass
-    }).then(() => wykop.request(['Entries', 'CommentAdd'], {
-            // api: [entryId],
-            api: [46638473],
-            post: {
-                body: body
-            }
-        }));
+async function login(login: string, password: string): Promise<any> {
+    console.log(`Logging in as ${process.env.nick}`);
+    await wykop.login(<ILoginData>{
+        login: login,
+        password: password
+    });
+    console.log(`Log in finished`);
 }
 
-export const WykopPoster: WykopAPI = {postComment: postComment};
+async function postComment(body: string, entryId: number): Promise<any> {
+    console.log(`Posting comment for entry id: ${entryId} with body "${body}"`);
+    await wykop.request(['Entries', 'CommentAdd'], {
+        // api: [entryId],
+        api: [46638473],
+        post: {
+            body: body
+        }
+    });
+}
+
+export const WykopPoster: WykopAPI = {login, postComment};
