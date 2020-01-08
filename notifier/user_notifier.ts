@@ -16,12 +16,14 @@ function getEntry(record: DynamoDBRecord): Promise<WykopEntry> {
         if (record.eventName === "INSERT") {
             resolve(unmarshal(record.dynamodb?.NewImage));
         }
+        console.log(`Skipping ${record.eventName} event`);
         return resolve();
     });
 }
 
 function notifyAuthor(entry: WykopEntry): Promise<any> {
     if (entry) {
+        console.log(`Notifying ${entry.author} in entry https://www.wykop.pl/wpis/${entry.id}`);
         // let body = `@${entry.author} MirkoHotBot gratuluje! Twój wpis wylądował w gorących!`;
         let body = `${entry.author} test!`;
         return wykop.postComment(body, entry.id);
