@@ -10,7 +10,7 @@ interface WykopAPI {
 }
 
 function postComment(body: string, entryId: number): Promise<any> {
-    console.log(`Posting comment for entry id: ${entryId} with body ${body}`);
+    console.log(`Posting comment for entry id: ${entryId} with body "${body}"`);
     return wykop.login(<ILoginData>{
         login: process.env.nick,
         password: process.env.pass

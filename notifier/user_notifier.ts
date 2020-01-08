@@ -15,9 +15,10 @@ function getEntry(record: DynamoDBRecord): Promise<WykopEntry> {
     return new Promise<WykopEntry>((resolve) => {
         if (record.eventName === "INSERT") {
             resolve(unmarshal(record.dynamodb?.NewImage));
+            return;
         }
         console.log(`Skipping ${record.eventName} event`);
-        return resolve();
+        resolve();
     });
 }
 
