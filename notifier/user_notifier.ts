@@ -39,7 +39,7 @@ function success(callback: Callback) {
 }
 
 function failure(callback: Callback) {
-    return (e) => callback(e, null);
+    return (e) => callback(JSON.stringify(e), null);
 }
 
 export const notify = (event: DynamoDBStreamEvent, context: Context, callback: Callback) => {
