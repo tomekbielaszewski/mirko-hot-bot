@@ -21,6 +21,32 @@ test('test', () => {
                         }
                     }
                 }
+            },
+            {
+                eventName: 'UPDATE',
+                dynamodb: {
+                    NewImage: {
+                        author: {
+                            S: "You should not see this"
+                        },
+                        id: {
+                            N: 46638473
+                        }
+                    }
+                }
+            },
+            {
+                eventName: 'INSERT',
+                dynamodb: {
+                    NewImage: {
+                        author: {
+                            S: "another author"
+                        },
+                        id: {
+                            N: 46638473
+                        }
+                    }
+                }
             }
         ]
     };
