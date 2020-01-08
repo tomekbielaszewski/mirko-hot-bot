@@ -11,34 +11,36 @@ export interface WykopEntry {
     period: number
 }
 
-function getEntry(record: DynamoDBRecord): WykopEntry | undefined {
-    if (record.eventName === "INSERT") {
-        return unmarshal(record.dynamodb?.NewImage);
-    }
-    return undefined;
+function getEntry(record: DynamoDBRecord): Promise<WykopEntry> {
+    return new Promise<WykopEntry>((resolve) => {
+        if (record.eventName === "INSERT") {
+            resolve(unmarshal(record.dynamodb?.NewImage));
+        }
+        return resolve();
+    });
 }
 
-function notifyAuthor(entry: WykopEntry) {
+function notifyAuthor(entry: WykopEntry): Promise<any> {
     if (entry) {
-        wykop.postComment(`@${entry.author} MirkoHotBot gratuluje! Twój wpis wylądował w gorących!`, entry.id);
+        // let body = `@${entry.author} MirkoHotBot gratuluje! Twój wpis wylądował w gorących!`;
+        let body = `${entry.author} test!`;
+        return wykop.postComment(body, entry.id);
     }
+    return Promise.resolve();
 }
 
 function success(callback: Callback) {
-    callback(null, true);
+    return () => callback(null, true);
 }
 
-function failure(callback: Callback, e: any) {
-    callback(e, null);
+function failure(callback: Callback) {
+    return (e) => callback(e, null);
 }
 
 export const notify = (event: DynamoDBStreamEvent, context: Context, callback: Callback) => {
-    try {
-        event.Records
-            .map(getEntry)
-            .forEach(notifyAuthor);
-        success(callback);
-    } catch (e) {
-        failure(callback, e)
-    }
+    Promise.all(event.Records.map(record =>
+        getEntry(record)
+            .then(notifyAuthor)))
+        .then(success(callback))
+        .catch(failure(callback));
 };
