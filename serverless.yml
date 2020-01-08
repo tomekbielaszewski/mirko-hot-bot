@@ -10,11 +10,10 @@ provider:
   region: eu-west-1
   runtime: nodejs12.x
   environment:
-    appkey: aNd401dAPp
-    secretkey: 3lWf1lCxD6
-    appkey_poster: xyz
-    secretkey_poster: xyz
-    userkey_poster: xyz
+    appkey: d99b6pFK8f
+    secretkey: z7nF82zdPy
+    nick: Mirkostatbot
+    pass:
     dynamo_table: mirko_hot_entries_24h_rev2
     region: eu-west-1
   iamRoleStatements:
