@@ -32,9 +32,13 @@ functions:
   userNotifier:
     handler: handler.userNotifier
     memorySize: 128
-    timeout: 10
+    timeout: 30
     events:
-      - schedule: cron(*/30 7-23 * * ? *) # (every 30th minute from 8 to 24 -> +1h for poland)
+      - stream:
+          type: dynamodb
+          batchSize: 25
+          enabled: true
+          arn: { "Fn::GetAtt": ["HotEntriesTable", "StreamArn"] }
 
 resources:
   Resources:
