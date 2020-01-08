@@ -14,7 +14,14 @@ test('test', () => {
                 dynamodb: {
                     NewImage: {
                         author: {
-                            S: "Grizwold"
+                            M: {
+                                avatar: {
+                                    S: "link"
+                                },
+                                login: {
+                                    S: "Grizwold"
+                                }
+                            }
                         },
                         id: {
                             N: 46638473
@@ -27,7 +34,14 @@ test('test', () => {
                 dynamodb: {
                     NewImage: {
                         author: {
-                            S: "You should not see this"
+                            M: {
+                                avatar: {
+                                    S: "link"
+                                },
+                                login: {
+                                    S: "you should not see this"
+                                }
+                            }
                         },
                         id: {
                             N: 46638473
@@ -40,7 +54,14 @@ test('test', () => {
                 dynamodb: {
                     NewImage: {
                         author: {
-                            S: "another author"
+                            M: {
+                                avatar: {
+                                    S: "link"
+                                },
+                                login: {
+                                    S: "another author"
+                                }
+                            }
                         },
                         id: {
                             N: 46638473

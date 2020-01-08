@@ -6,7 +6,9 @@ import {WykopPoster as wykop} from './wykop_poster';
 
 export interface WykopEntry {
     id: number,
-    author: string,
+    author: {
+        login: string
+    },
     page: number,
     period: number
 }
@@ -26,9 +28,9 @@ function extractEntry(record: DynamoDBRecord): WykopEntry {
 }
 
 async function notifyAuthor(entry: WykopEntry): Promise<any> {
-    console.log(`Notifying ${entry.author} in entry https://www.wykop.pl/wpis/${entry.id}`);
+    console.log(`Notifying ${entry.author.login} in entry https://www.wykop.pl/wpis/${entry.id}`);
     // let body = `@${entry.author} MirkoHotBot gratuluje! Twój wpis wylądował w gorących!`;
-    let body = `${entry.author} test!`;
+    let body = `${entry.author.login} test!`;
     await wykop.postComment(body, entry.id);
 }
 
